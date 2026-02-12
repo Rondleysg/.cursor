@@ -10,7 +10,14 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 ## Imports
 
 - **Always** import `expect` from `@wdio/globals`.
+- Import `allureReporter` from `@wdio/allure-reporter` when you want an elaborated Allure report (steps, epic/feature/story).
 - Use `getDeviceFromCapabilities('browser')` or `getDeviceFromCapabilities('mobile')` from [lib/Utils.ts](../../../lib/Utils.ts) when you need the session directly; otherwise use Page Objects (browser) or Screen Objects (app).
+
+## Allure
+
+- **Estrutura:** `addEpic` (macro área), `addFeature` (funcionalidade), `addStory` (user story); use in `beforeEach` per suite.
+- **Steps:** wrap logical blocks in `allureReporter.step('step name', async () => { ... })`.
+- **Quando usar o resto da API:** `addSeverity` (criticidade: trivial/minor/normal/critical/blocker); `addTag` (smoke, regression, e2e); `addAttachment` (evidências extras); `addIssue`/`addTestId` (integração Jira/TMS se configurado); `addArgument` (parâmetros no report para debug). See [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md) for the full "API Allure – quando usar" table.
 
 ## Browser test
 
@@ -40,6 +47,7 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 - [ ] Import `expect` from `@wdio/globals`; device access via Page/Screen Objects or `lib/Utils`
 - [ ] Use test-data when there are reusable inputs; use builder or data-factory when varying data
 - [ ] Test name describes scenario and expected result
+- [ ] (Recomendado) Allure: import `@wdio/allure-reporter`; estrutura (epic/feature/story), steps; opcional: severity, tag, attachment, issue/testId, argument — ver [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md)
 
 ## Full reference
 

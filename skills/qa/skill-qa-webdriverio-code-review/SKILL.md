@@ -40,12 +40,14 @@ Produce the review in this order:
 - Assertions: use of expect, timeouts, clear success criteria.
 - Legibilidade: Arrange–Act–Assert, comentários úteis, nome do teste descritivo.
 - Page/Screen Objects: proper encapsulation, reuse.
+- **Allure:** Steps and structure (epic/feature/story); when missing suggest per [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md): severity for critical flows, tags (smoke/regression/e2e), attachment for evidence, addIssue/addTestId if linked to Jira/TMS, addArgument for debug context.
 
 ### 3. Padronização
 
 - Estrutura: test/ e test-data/ alinhados ao fluxo; nomenclatura de pastas e arquivos.
 - Dados: inputs.json/builder.ts conforme docs; uso de data-factory quando fizer sentido.
 - Fixtures: se faz sentido sugerir fixture (ex.: loginFixture, setup por fluxo) para evitar duplicação.
+- Allure: steps e estrutura (epic/feature/story); usar severity/tag/attachment/issue/testId/argument quando fizer sentido; referência à tabela "API Allure – quando usar" em [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md).
 
 ### 4. Resumo de melhorias
 
