@@ -31,7 +31,8 @@ Produce the review in this order:
 
 ### 1. Manutenção (conventions)
 
-- Checklist from maintain skill: expect from @wdio/globals, device access via lib/Utils, test-data vs hardcode, directory structure, baseURL/env.
+- Checklist from maintain skill: expect from @wdio/globals, device access via lib/Utils, test-data vs hardcode, directory structure (`test/<fluxo>/`), baseURL/env.
+- **Tags e suites:** Specs devem ter **tag de severidade** no nome do teste conforme a criticidade do caso (@blocker, @critical, @normal, @minor, @trivial); opcionalmente @fluxo, @web, @app. Cada fluxo deve ter entrada em `suites` em wdio.shared.conf para execução seletiva (`--suite`, `--mochaOpts.grep`).
 - Explicit: ✅ atende / ⚠️ atenção / ❌ não atende, with short reason.
 
 ### 2. Qualidade
@@ -41,10 +42,12 @@ Produce the review in this order:
 - Legibilidade: Arrange–Act–Assert, comentários úteis, nome do teste descritivo.
 - Page/Screen Objects: proper encapsulation, reuse.
 - **Allure:** Steps and structure (epic/feature/story); when missing suggest per [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md): severity for critical flows, tags (smoke/regression/e2e), attachment for evidence, addIssue/addTestId if linked to Jira/TMS, addArgument for debug context.
+- **Tags no it():** Test names should include a **severity tag** for that case (@blocker, @critical, @normal, @minor, @trivial) so runs can be filtered by severity; optionally @fluxo, @web, @app. Filter via `--suite` or `--mochaOpts.grep` (e.g. test-ci-local:critical, test-ci-local:login).
 
 ### 3. Padronização
 
-- Estrutura: test/ e test-data/ alinhados ao fluxo; nomenclatura de pastas e arquivos.
+- Estrutura: test/<fluxo>/ e test-data/<fluxo>/ alinhados; cada fluxo com entrada em `suites` em wdio.shared.conf; nomenclatura de pastas e arquivos.
+- Tags: testes com tag de severidade conforme o caso (@blocker, @critical, @normal, @minor, @trivial); opcionalmente @fluxo, @web, @app. Execução seletiva: --suite, --mochaOpts.grep; scripts em package.json (test-ci-local:login, test-ci-local:critical) como referência.
 - Dados: inputs.json/builder.ts conforme docs; uso de data-factory quando fizer sentido.
 - Fixtures: se faz sentido sugerir fixture (ex.: loginFixture, setup por fluxo) para evitar duplicação.
 - Allure: steps e estrutura (epic/feature/story); usar severity/tag/attachment/issue/testId/argument quando fizer sentido; referência à tabela "API Allure – quando usar" em [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md).

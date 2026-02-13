@@ -13,6 +13,12 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 - Import `allureReporter` from `@wdio/allure-reporter` when you want an elaborated Allure report (steps, epic/feature/story).
 - Use `getDeviceFromCapabilities('browser')` or `getDeviceFromCapabilities('mobile')` from [lib/Utils.ts](../../../lib/Utils.ts) when you need the session directly; otherwise use Page Objects (browser) or Screen Objects (app).
 
+## Tags (execução seletiva)
+
+- Marque com **tag de severidade** de acordo com a criticidade daquele caso: `@blocker`, `@critical`, `@normal`, `@minor`, `@trivial` (mesmos níveis do Allure). Opcionalmente use `@<fluxo>`, `@web`, `@app` para contexto.
+- Exemplo: `it('Perform login in both browser and app @login @critical', async () => { ... })`.
+- Execução: `--suite login` (roda só a suite login); `--mochaOpts.grep=@critical` (roda só testes com essa severidade). Ver scripts em package.json (`test-ci-local:login`, `test-ci-local:critical`).
+
 ## Allure
 
 - **Estrutura:** `addEpic` (macro área), `addFeature` (funcionalidade), `addStory` (user story); use in `beforeEach` per suite.
@@ -38,15 +44,16 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 
 ## E2E test (browser + app)
 
-- Place in `test/e2e/`; use both `getDeviceFromCapabilities('browser')` and `getDeviceFromCapabilities('mobile')`; optionally `reLaunchApp(emulator)` from `lib/Utils` or fixtures.
+- Place in `test/<fluxo>/` (e.g. test/login/) or `test/e2e/`; use both `getDeviceFromCapabilities('browser')` and `getDeviceFromCapabilities('mobile')`; optionally `reLaunchApp(emulator)` from `lib/Utils` or fixtures.
 - Can run steps in sequence or in parallel (`Promise.all`).
+- Add a severity tag in the test name (@blocker, @critical, @normal, @minor, @trivial) according to that case; optionally @fluxo, @web, @app.
 
 ## Checklist
 
-- [ ] File under `test/specs/<fluxo>/` or `test/e2e/` with extension `.ts` (and spec pattern in wdio.shared.conf)
+- [ ] File under `test/<fluxo>/` (e.g. test/login/, test/register/) or `test/e2e/` with extension `.ts` (specs pattern in wdio.shared.conf; flow must have suite in `suites`)
 - [ ] Import `expect` from `@wdio/globals`; device access via Page/Screen Objects or `lib/Utils`
 - [ ] Use test-data when there are reusable inputs; use builder or data-factory when varying data
-- [ ] Test name describes scenario and expected result
+- [ ] Test name describes scenario and expected result; **include severity tag** (@blocker, @critical, @normal, @minor, @trivial) for that case; optionally @fluxo, @web, @app
 - [ ] (Recomendado) Allure: import `@wdio/allure-reporter`; estrutura (epic/feature/story), steps; opcional: severity, tag, attachment, issue/testId, argument — ver [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md)
 
 ## Full reference
