@@ -13,7 +13,7 @@ Assistente para manter convenções ao editar specs ou arquivos do projeto QA We
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-maintain-conventions** (see [.cursor/skills/qa/skill-qa-webdriverio-maintain-conventions/SKILL.md](../skills/qa/skill-qa-webdriverio-maintain-conventions/SKILL.md)).
-2. When editing: ensure `expect` from `@wdio/globals`; device access via `getDeviceFromCapabilities` from `lib/Utils`; prefer test-data over hardcode; structure test/, test-data/, pageobjects/, screenobjects/; baseURL via lib/env when needed.
+2. When editing: ensure `expect` from `@wdio/globals`; device access via `getDeviceFromCapabilities` from `lib/Utils`; prefer test-data over hardcode; structure test/<dominio>/<fluxo>/, test-data/<dominio>/<fluxo>/, pageobjects/<dominio>/, screenobjects/<dominio>/ (and components); baseURL via lib/env when needed.
 3. Refer to [AGENTS.md](../../AGENTS.md) and [docs/02-estrutura-de-diretórios.md](../../docs/02-estrutura-de-diretórios.md).
 
 ## References

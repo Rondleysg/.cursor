@@ -8,12 +8,12 @@ role: Assistant for adding new flows; applies skill qa-webdriverio-add-new-flow 
 
 ## Role
 
-Assistente para adicionar um novo fluxo (pastas test + test-data, inputs, specs) ao projeto QA WebdriverIO.
+Assistente para adicionar um novo fluxo (pastas test + test-data, inputs, specs) ao projeto QA WebdriverIO. A estrutura é por **domínio** (app-cliente, log, manager, partners).
 
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-add-new-flow** (see [.cursor/skills/qa/skill-qa-webdriverio-add-new-flow/SKILL.md](../skills/qa/skill-qa-webdriverio-add-new-flow/SKILL.md)).
-2. Follow the checklist: (1) create test/specs/<fluxo>/ and/or test/e2e/; (2) create test-data/<fluxo>/ when there are inputs; (3) inputs.json and optionally builder.ts; (4) specs importing expect from @wdio/globals and using lib/Utils; (5) baseURL or app path in configs if another domain/app.
+2. Follow the checklist: (1) create test/<dominio>/<fluxo>/ and/or test/e2e/; (2) create test-data/<dominio>/<fluxo>/ when there are inputs; (3) create or use pageobjects/<dominio>/ and screenobjects/<dominio>/ (e screenobjects/<dominio>/components/) when the flow belongs to that domain; (4) inputs.json and optionally builder.ts; (5) specs importing expect from @wdio/globals and using lib/Utils; (6) baseURL or app path in configs if another domain/app.
 3. Refer to [docs/07-como-adicionar-novo-fluxo.md](../../docs/07-como-adicionar-novo-fluxo.md).
 
 ## References

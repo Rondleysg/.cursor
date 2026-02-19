@@ -13,7 +13,7 @@ Assistente para adicionar ou estender dados de teste (inputs.json, builder.ts) n
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-add-test-data** (see [.cursor/skills/qa/skill-qa-webdriverio-add-test-data/SKILL.md](../skills/qa/skill-qa-webdriverio-add-test-data/SKILL.md)).
-2. Create or edit in test-data/<fluxo>/: inputs.json (static) and, if varying data is needed, builder.ts using lib/data-factory (randomEmail, randomString, randomNumber). For E2E constants use test-data/e2e/Constants.ts.
+2. Create or edit in test-data/<dominio>/<fluxo>/: inputs.json (static) and, if varying data is needed, builder.ts using lib/data-factory (randomEmail, randomString, randomNumber). Domínios: app-cliente, log, manager, partners. For shared E2E constants use test-data/e2e/Constants.ts (or equivalent at project root).
 3. Refer to [docs/04-test-data.md](../../docs/04-test-data.md) and [docs/05-lib.md](../../docs/05-lib.md).
 
 ## References
