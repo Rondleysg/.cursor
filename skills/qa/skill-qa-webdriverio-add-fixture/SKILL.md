@@ -16,7 +16,7 @@ When adding or extending a fixture for the QA WebdriverIO project, edit [fixture
 
 **Fixture `loginFixture(browser)`:** Receives the app/browser session, fills login fields, clicks login, waits for home. See [docs/03-fixtures.md](../../../docs/03-fixtures.md).
 
-**Fixture with test-data:** A function that loads inputs from `test-data/<fluxo>/inputs.json` and performs a flow (e.g. `checkoutFixture(browser, inputs.checkout)`).
+**Fixture with test-data:** A function that loads inputs from `test-data/<dominio>/<fluxo>/inputs.json` and performs a flow (e.g. `checkoutFixture(browser, inputs.checkout)`). When the flow is domain-specific, use Page Objects from `pageobjects/<dominio>/` and Screen Objects from `screenobjects/<dominio>/` as needed.
 
 **Fixture for E2E setup:** e.g. `reLaunchApp(emulator)` (already present) or a function that opens a given URL in browser and waits for a condition.
 

@@ -31,8 +31,8 @@ Produce the review in this order:
 
 ### 1. Manutenção (conventions)
 
-- Checklist from maintain skill: expect from @wdio/globals, device access via lib/Utils, test-data vs hardcode, directory structure (`test/<fluxo>/`), baseURL/env.
-- **Tags e suites:** Specs devem ter **tag de severidade** no nome do teste conforme a criticidade do caso (@blocker, @critical, @normal, @minor, @trivial); opcionalmente @fluxo, @web, @app. Cada fluxo deve ter entrada em `suites` em wdio.shared.conf para execução seletiva (`--suite`, `--mochaOpts.grep`).
+- Checklist from maintain skill: expect from @wdio/globals, device access via lib/Utils, test-data vs hardcode, directory structure by **domain** (`test/<dominio>/<fluxo>/`, `test-data/<dominio>/<fluxo>/`, `pageobjects/<dominio>/`, `screenobjects/<dominio>/`), baseURL/env.
+- **Tags e suites:** Specs devem ter **tag de severidade** no nome do teste conforme a criticidade do caso (@blocker, @critical, @normal, @minor, @trivial); opcionalmente @fluxo, @web, @app. Cada fluxo deve ter entrada em `suites` em wdio.shared.conf (ex.: `'manager/login': ['../test/manager/login/**/*.spec.ts']`) para execução seletiva (`--suite`, `--mochaOpts.grep`).
 - Explicit: ✅ atende / ⚠️ atenção / ❌ não atende, with short reason.
 
 ### 2. Qualidade
@@ -46,7 +46,7 @@ Produce the review in this order:
 
 ### 3. Padronização
 
-- Estrutura: test/<fluxo>/ e test-data/<fluxo>/ alinhados; cada fluxo com entrada em `suites` em wdio.shared.conf; nomenclatura de pastas e arquivos.
+- Estrutura por domínio: test/<dominio>/<fluxo>/, test-data/<dominio>/<fluxo>/, pageobjects/<dominio>/, screenobjects/<dominio>/ alinhados ao mesmo domínio (app-cliente, log, manager, partners); cada fluxo com entrada em `suites` em wdio.shared.conf; nomenclatura de pastas e arquivos.
 - Tags: testes com tag de severidade conforme o caso (@blocker, @critical, @normal, @minor, @trivial); opcionalmente @fluxo, @web, @app. Execução seletiva: --suite, --mochaOpts.grep; scripts em package.json (test-ci-local:login, test-ci-local:critical) como referência.
 - Dados: inputs.json/builder.ts conforme docs; uso de data-factory quando fizer sentido.
 - Fixtures: se faz sentido sugerir fixture (ex.: loginFixture, setup por fluxo) para evitar duplicação.

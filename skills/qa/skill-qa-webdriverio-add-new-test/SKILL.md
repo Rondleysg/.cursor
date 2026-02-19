@@ -28,7 +28,7 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 ## Browser test
 
 - Use Page Objects (e.g. `LoginPage`, `SecurePage`) that internally use the browser session, or call `getDeviceFromCapabilities('browser')` in the spec.
-- Use data from `test-data/<fluxo>/inputs.json` when applicable; import from test-data path relative to spec.
+- Use data from `test-data/<dominio>/<fluxo>/inputs.json` when applicable; import from path relative to spec (e.g. `../../../test-data/manager/login/inputs.json`).
 - Arrange-Act-Assert; descriptive test name (scenario + expected result).
 - baseURL comes from config (lib/env when needed).
 
@@ -37,21 +37,21 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 ## App test (mobile)
 
 - Use Screen Objects (e.g. `TabBar`, `LoginScreen`, `NativeAlert`) or `getDeviceFromCapabilities('mobile')` and helpers from `lib/Utils` (getElementByTestIDApp, getElementByAccessibilityLabelApp).
-- Use data from `test-data/<fluxo>/inputs.json` or a builder when applicable; use [lib/data-factory.ts](../../../lib/data-factory.ts) for varying data.
+- Use data from `test-data/<dominio>/<fluxo>/inputs.json` or a builder when applicable; use [lib/data-factory.ts](../../../lib/data-factory.ts) for varying data.
 - Arrange-Act-Assert; descriptive test name.
 
 **Example:** See [docs/06-como-adicionar-novo-teste.md](../../../docs/06-como-adicionar-novo-teste.md) (app example).
 
 ## E2E test (browser + app)
 
-- Place in `test/<fluxo>/` (e.g. test/login/) or `test/e2e/`; use both `getDeviceFromCapabilities('browser')` and `getDeviceFromCapabilities('mobile')`; optionally `reLaunchApp(emulator)` from `lib/Utils` or fixtures.
+- Place in `test/<dominio>/<fluxo>/` (e.g. test/manager/login/) or `test/e2e/`; use both `getDeviceFromCapabilities('browser')` and `getDeviceFromCapabilities('mobile')`; optionally `reLaunchApp(emulator)` from `lib/Utils` or fixtures. Imports: Page Objects from `pageobjects/<dominio>/`, Screen Objects from `screenobjects/<dominio>/`, test-data from `test-data/<dominio>/<fluxo>/`.
 - Can run steps in sequence or in parallel (`Promise.all`).
 - Add a severity tag in the test name (@blocker, @critical, @normal, @minor, @trivial) according to that case; optionally @fluxo, @web, @app.
 
 ## Checklist
 
-- [ ] File under `test/<fluxo>/` (e.g. test/login/, test/register/) or `test/e2e/` with extension `.ts` (specs pattern in wdio.shared.conf; flow must have suite in `suites`)
-- [ ] Import `expect` from `@wdio/globals`; device access via Page/Screen Objects or `lib/Utils`
+- [ ] File under `test/<dominio>/<fluxo>/` (e.g. test/manager/login/) or `test/e2e/` with extension `.ts` (specs pattern in wdio.shared.conf; flow must have suite in `suites`)
+- [ ] Import `expect` from `@wdio/globals`; device access via Page/Screen Objects from `pageobjects/<dominio>/` and `screenobjects/<dominio>/` or `lib/Utils`; test-data from `test-data/<dominio>/<fluxo>/` with correct relative path
 - [ ] Use test-data when there are reusable inputs; use builder or data-factory when varying data
 - [ ] Test name describes scenario and expected result; **include severity tag** (@blocker, @critical, @normal, @minor, @trivial) for that case; optionally @fluxo, @web, @app
 - [ ] (Recomendado) Allure: import `@wdio/allure-reporter`; estrutura (epic/feature/story), steps; opcional: severity, tag, attachment, issue/testId, argument — ver [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md)

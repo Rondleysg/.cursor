@@ -1,32 +1,38 @@
 ---
 name: frontend-qa-friendly
-description: Guides frontend markup and structure for easy Playwright testing: semantic HTML, accessible roles and labels, stable selectors (data-testid). Use when writing or reviewing UI components, forms, or pages that will be tested by QA.
+description: Guides frontend markup and structure for easy QA testing: web (semantic HTML, Playwright locators, data-testid) and React Native (testID, accessibilityLabel). Use when writing or reviewing UI components, forms, or pages that will be tested by QA.
 ---
 
 # Frontend QA-friendly
 
-When writing or reviewing frontend code that will be tested by QA (e.g. Playwright), ensure markup allows stable, fast locators: `getByRole`, `getByLabel`, `getByTestId`. Avoid selectors that depend on DOM position or styling.
+When writing or reviewing frontend code that will be tested by QA, ensure markup allows stable, fast locators. This skill covers **web** (e.g. Playwright) and **React Native** (e.g. Appium/WebdriverIO).
 
-## Goal
+---
+
+## Web (HTML / Playwright)
+
+Ensure markup allows stable locators: `getByRole`, `getByLabel`, `getByTestId`. Avoid selectors that depend on DOM position or styling.
+
+### Goal
 
 Frontend that lets tests locate and fill elements quickly and reliably, without brittle XPaths like `div[1]/div[2]/input`.
 
-## Forms
+### Forms
 
 - **Labels:** Always associate each input with a label: `<label for="id">` and `id` on the input, or wrap the input inside `<label>`.
 - Avoid inputs with no associated label; tests rely on `getByLabel('Label text')` or `getByRole('textbox', { name: 'Label text' })`.
 - **Placeholder:** If using placeholder as fallback, keep it stable or document it; tests may use `getByPlaceholder()`.
 
-## Buttons and links
+### Buttons and links
 
 - Use visible text or a stable `aria-label` so tests can use `getByRole('button', { name: '...' })` or `getByRole('link', { name: '...' })`.
 - Avoid buttons/links with no accessible name (e.g. icon-only without aria-label).
 
-## Checkboxes and radios
+### Checkboxes and radios
 
 - Associate each control with a label or `aria-label` so tests can use `getByRole('checkbox', { name: '...' })` or `getByRole('radio', { name: '...' })`.
 
-## Combos and selects
+### Combos and selects
 
 - Prefer native `<select>` or components that expose proper roles and names (e.g. combobox + option).
 - Avoid custom dropdowns that are only targetable by "first button in second div"; expose role and accessible name so tests can use `getByRole('combobox', { name: '...' })` and `getByRole('option', { name: '...' })`.

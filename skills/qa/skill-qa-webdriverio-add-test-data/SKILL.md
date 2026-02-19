@@ -9,14 +9,14 @@ When adding or extending test data for a flow, follow this structure.
 
 ## Where
 
-- **Per flow:** `test-data/<fluxo>/`
+- **Per flow (por domínio):** `test-data/<dominio>/<fluxo>/` — domínios: app-cliente, log, manager, partners (ex.: `test-data/manager/login/`).
 - **E2E constants:** `test-data/e2e/Constants.ts` (e.g. BUNDLE_ID, PACKAGE_NAME)
-- **Optional split:** `test-data/api/<fluxo>/` or `test-data/ui/<fluxo>/` if the project separates by type
+- **Optional split:** `test-data/<dominio>/api/<fluxo>/` or `test-data/<dominio>/ui/<fluxo>/` if the project separates by type
 
 ## Static inputs (inputs.json)
 
 - Create or edit `inputs.json` (or `inputs.ts`) with entries per scenario (e.g. `login`, `checkout`).
-- In the spec, import: `import inputs from '../../test-data/<fluxo>/inputs.json';` (path relative to spec) and use (e.g. `inputs.login`, `inputs.checkout`).
+- In the spec (under `test/<dominio>/<fluxo>/`), import: `import inputs from '../../../test-data/<dominio>/<fluxo>/inputs.json';` (path relative to spec) and use (e.g. `inputs.login`, `inputs.checkout`).
 
 **Example:** [docs/04-test-data.md](../../../docs/04-test-data.md), [docs/07-como-adicionar-novo-fluxo.md](../../../docs/07-como-adicionar-novo-fluxo.md).
 
@@ -34,9 +34,9 @@ When adding or extending test data for a flow, follow this structure.
 
 ## Checklist
 
-- [ ] Folder exists under `test-data/<fluxo>/` (or `test-data/e2e/` for constants)
+- [ ] Folder exists under `test-data/<dominio>/<fluxo>/` (or `test-data/e2e/` for shared constants)
 - [ ] inputs.json (or inputs.ts) defines static cases; builder.ts only if varying data is needed
-- [ ] Spec imports from path relative to spec (e.g. `../../test-data/<fluxo>/inputs.json`)
+- [ ] Spec imports from path relative to spec (e.g. `../../../test-data/<dominio>/<fluxo>/inputs.json` from `test/<dominio>/<fluxo>/spec.ts`)
 
 ## Full reference
 
