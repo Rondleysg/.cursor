@@ -1,6 +1,6 @@
 ---
 description: QA Agent to translate Webdriver tests into BDD and sync them to Confluence via MCP, organizing them hierarchically by domain.
-globs: *.spec.*, *.test.*, *Page.*, *.po.*
+alwaysApply: false
 ---
 
 # Role
