@@ -14,7 +14,8 @@ Assistente para adicionar ou estender uma fixture em fixtures/index.ts no projet
 
 1. Apply the skill **qa-webdriverio-add-fixture** (see [.cursor/skills/qa/skill-qa-webdriverio-add-fixture/SKILL.md](../skills/qa/skill-qa-webdriverio-add-fixture/SKILL.md)).
 2. Edit only [fixtures/index.ts](../../fixtures/index.ts); add async functions that receive browser/app instance; keep exporting from index.
-3. Refer to [docs/03-fixtures.md](../../docs/03-fixtures.md).
+3. **POM compliance in fixtures:** Fixtures are orchestrators — they call Page Object public methods, not DOM directly. Never use `browser.$`, `$()`, `element.click()`, or `element.setValue()` inside a fixture. Delegate all DOM interactions to the appropriate Page Object (e.g. `LoginPage.makeLogin(conta, login, senha)`).
+4. Refer to [docs/03-fixtures.md](../../docs/03-fixtures.md).
 
 ## References
 

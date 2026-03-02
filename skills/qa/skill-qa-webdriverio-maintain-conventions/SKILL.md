@@ -7,10 +7,38 @@ description: Enforce QA WebdriverIO project conventions when editing tests or pr
 
 When editing specs or other project files, ensure the QA WebdriverIO conventions are followed.
 
+## Page Object Model (POM) — MANDATORY
+
+All browser tests **must** strictly follow the Page Object Model. This is the most critical convention to enforce.
+
+### Separation of responsibilities
+
+| Layer | Responsibility |
+|---|---|
+| **Page Object** (`pageobjects/<dominio>/`) | All DOM interactions: selectors (getters), `click`, `setValue`, `waitForExist`, navigation, form submission, session management |
+| **Spec file** (`test/<dominio>/<fluxo>/`) | Orchestration only: call Page Object methods, assert with `expect`, add Allure metadata |
+
+### What to flag as violations
+
+- `browser.$`, `browser.$$`, `$()`, `$$()`, `element.click()`, `element.setValue()` in spec files → **move to Page Object**
+- Helper functions in spec files that interact with the DOM → **move to Page Object as public methods**
+- Selectors defined in spec files → **move to Page Object as private getters**
+- Direct assertions on elements obtained in the spec → **expose a public getter in the Page Object, assert in spec**
+
+### Selector quality (inside Page Objects)
+
+Prefer in this order:
+1. `aria/<label>` — accessibility label
+2. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes
+3. `#id` — stable IDs
+4. `[name="..."]` — form field names
+5. `$('..')` — parent traversal (WebdriverIO native)
+6. XPath — only as last resort; avoid positional XPath or dynamic class names with hashes
+
 ## Specs (test/)
 
 - **Imports:** Import `expect` from `@wdio/globals`. Use `getDeviceFromCapabilities('browser')` or `getDeviceFromCapabilities('mobile')` from [lib/Utils.ts](../../../lib/Utils.ts) to get the session; do not rely on global `driver`/`browser` without proper typing.
-- **Data:** Prefer [test-data](../../../test-data/) (inputs.json, builder.ts, Constants.ts) over hardcoding payloads in specs; use [lib/data-factory.ts](../../../lib/data-factory.ts) for varying data (randomEmail, randomString, randomNumber).
+- **Data:** Prefer [test-data](../../../test-data/) (`inputs.ts`, `builder.ts`, `Constants.ts`) over hardcoding payloads in specs; use [lib/data-factory.ts](../../../lib/data-factory.ts) for varying data (randomEmail, randomString, randomNumber).
 - **Structure:** Organização por **domínio** (app-cliente, log, manager, partners). Specs em `test/<dominio>/<fluxo>/*.ts` (ex.: `test/manager/login/`); dados em `test-data/<dominio>/<fluxo>/`; Page Objects em `pageobjects/<dominio>/`; Screen Objects em `screenobjects/<dominio>/` e `screenobjects/<dominio>/components/`. Cada fluxo tem **suite** correspondente em [configs/wdio.shared.conf.ts](../../../configs/wdio.shared.conf.ts) (ex.: `suites: { 'manager/login': ['../test/manager/login/**/*.spec.ts'] }`).
 - **Tags (execução seletiva):** Inclua no nome do `it()` uma **tag de severidade** de acordo com a criticidade daquele caso: `@blocker`, `@critical`, `@normal`, `@minor`, `@trivial` (alinhado ao Allure). Ex.: `it('... @login @critical', async () => { ... })`. Opcionalmente `@web`/`@app` para contexto. Uso: `--mochaOpts.grep=@critical` ou `--suite login` (ver package.json: `test-ci-local:critical`, `test-ci-local:login`).
 - **baseURL / env:** Use [lib/env.ts](../../../lib/env.ts) when baseURL or URLs need to be read from env; override via `.env` (see `.env.example`).
@@ -18,8 +46,11 @@ When editing specs or other project files, ensure the QA WebdriverIO conventions
 
 ## Checklist when editing
 
+- [ ] **POM:** NO `browser.$`, `$()`, `click()`, `setValue()`, or DOM helpers in spec files — all DOM interactions in Page Objects
+- [ ] **POM:** Page Objects expose public methods for actions and public getters for assertions; selectors are private getters
+- [ ] **POM:** Selectors use stable attributes (`data-testid`, `data-cy`, `#id`, `[name]`, `aria/`) — no fragile class names or positional XPath
 - [ ] Specs import `expect` from `@wdio/globals`; device access via `lib/Utils` (getDeviceFromCapabilities)
-- [ ] Reusable or scenario-specific inputs are in test-data, not inline in specs
+- [ ] Reusable or scenario-specific inputs are in test-data (`inputs.ts`), not inline in specs
 - [ ] New tests go under `test/<dominio>/<fluxo>/` (e.g. test/manager/login/); new data under `test-data/<dominio>/<fluxo>/`; Page Objects in `pageobjects/<dominio>/`; Screen Objects in `screenobjects/<dominio>/` (and components); new flow has entry in `suites` in wdio.shared.conf
 - [ ] Test names include a severity tag per case (@blocker, @critical, @normal, @minor, @trivial); optionally @fluxo, @web, @app
 - [ ] Browser tests use Page Objects from `pageobjects/<dominio>/`; app tests use Screen Objects from `screenobjects/<dominio>/` or helpers from `lib/Utils` (getElementByTestIDApp, etc.)

@@ -7,6 +7,63 @@ description: Add a new WebdriverIO test (browser, app, or E2E) following project
 
 When adding a new test to the QA WebdriverIO project, follow these conventions.
 
+## Page Object Model (POM) — MANDATORY
+
+All browser tests **must** follow the Page Object Model strictly. This is a non-negotiable convention.
+
+### Responsibilities
+
+| Layer | Responsibility |
+|---|---|
+| **Page Object** (`pageobjects/<dominio>/`) | All DOM interactions: selectors (getters), `click`, `setValue`, `waitForExist`, navigation, form submission, session management |
+| **Spec file** (`test/<dominio>/<fluxo>/`) | Orchestration only: call Page Object methods, assert with `expect`, add Allure metadata |
+
+### Rules
+
+- **NEVER** use `browser.$`, `browser.$$`, `$()`, `$$()`, `element.click()`, `element.setValue()`, or any DOM interaction directly in a spec file.
+- **NEVER** define helper functions in spec files that interact with the DOM. Move them to the Page Object.
+- **ALWAYS** expose public methods (actions) and public getters (elements for assertion) in the Page Object.
+- Page Objects should be exported as singletons (`export default new LoginPage()`) when stateless.
+- Specs only import Page Objects and call their public API.
+
+### Selectors (inside Page Objects)
+
+Prefer in this order:
+1. `aria/<label>` — accessibility label
+2. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes
+3. `#id` — stable IDs
+4. `[name="..."]` — form field names
+5. `$('..')` — parent traversal (WebdriverIO native)
+6. XPath — only as last resort; avoid positional XPath
+
+### Example structure
+
+```typescript
+// pageobjects/manager/LoginPage.ts
+class LoginPage extends ManagerPage {
+  get inputEmail() { return browser.$('#username'); }
+  get errorMessage() { return browser.$('#error'); }
+
+  public async fillCredentials(email: string, password: string) {
+    await this.inputEmail.setValue(email);
+  }
+  public async submitForm() {
+    await this.buttonSubmit.click();
+  }
+}
+export default new LoginPage();
+
+// test/manager/login/login.spec.ts
+it('should show error for empty email @critical', async () => {
+  // Arrange
+  await LoginPage.open();
+  // Act
+  await LoginPage.submitForm();
+  // Assert
+  await expect(LoginPage.errorMessage).toHaveText('Required');
+});
+```
+
 ## Imports
 
 - **Always** import `expect` from `@wdio/globals`.
@@ -27,8 +84,8 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 
 ## Browser test
 
-- Use Page Objects (e.g. `LoginPage`, `SecurePage`) that internally use the browser session, or call `getDeviceFromCapabilities('browser')` in the spec.
-- Use data from `test-data/<dominio>/<fluxo>/inputs.json` when applicable; import from path relative to spec (e.g. `../../../test-data/manager/login/inputs.json`).
+- Use Page Objects (e.g. `LoginPage`, `SecurePage`) that internally use the browser session. **All DOM interactions go in the Page Object.**
+- Use data from `test-data/<dominio>/<fluxo>/inputs.ts` when applicable; import from path relative to spec (e.g. `../../../test-data/manager/login/inputs`).
 - Arrange-Act-Assert; descriptive test name (scenario + expected result).
 - baseURL comes from config (lib/env when needed).
 
@@ -37,7 +94,7 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 ## App test (mobile)
 
 - Use Screen Objects (e.g. `TabBar`, `LoginScreen`, `NativeAlert`) or `getDeviceFromCapabilities('mobile')` and helpers from `lib/Utils` (getElementByTestIDApp, getElementByAccessibilityLabelApp).
-- Use data from `test-data/<dominio>/<fluxo>/inputs.json` or a builder when applicable; use [lib/data-factory.ts](../../../lib/data-factory.ts) for varying data.
+- Use data from `test-data/<dominio>/<fluxo>/inputs.ts` or a builder when applicable; use [lib/data-factory.ts](../../../lib/data-factory.ts) for varying data.
 - Arrange-Act-Assert; descriptive test name.
 
 **Example:** See [docs/06-como-adicionar-novo-teste.md](../../../docs/06-como-adicionar-novo-teste.md) (app example).
@@ -52,6 +109,9 @@ When adding a new test to the QA WebdriverIO project, follow these conventions.
 
 - [ ] File under `test/<dominio>/<fluxo>/` (e.g. test/manager/login/) or `test/e2e/` with extension `.ts` (specs pattern in wdio.shared.conf; flow must have suite in `suites`)
 - [ ] Import `expect` from `@wdio/globals`; device access via Page/Screen Objects from `pageobjects/<dominio>/` and `screenobjects/<dominio>/` or `lib/Utils`; test-data from `test-data/<dominio>/<fluxo>/` with correct relative path
+- [ ] **POM enforced:** NO `browser.$`, `$()`, `click()`, `setValue()`, or DOM helpers in spec files — all in Page Objects
+- [ ] Page Objects expose public methods for actions and public getters for assertions
+- [ ] Selectors use stable attributes (`data-testid`, `data-cy`, `#id`, `[name]`, `aria/`) — no fragile class names or positional XPath
 - [ ] Use test-data when there are reusable inputs; use builder or data-factory when varying data
 - [ ] Test name describes scenario and expected result; **include severity tag** (@blocker, @critical, @normal, @minor, @trivial) for that case; optionally @fluxo, @web, @app
 - [ ] (Recomendado) Allure: import `@wdio/allure-reporter`; estrutura (epic/feature/story), steps; opcional: severity, tag, attachment, issue/testId, argument — ver [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md)

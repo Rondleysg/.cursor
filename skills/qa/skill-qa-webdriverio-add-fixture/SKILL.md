@@ -24,7 +24,8 @@ When adding or extending a fixture for the QA WebdriverIO project, edit [fixture
 
 - Keep exporting from `fixtures/index.ts`; specs import from `../fixtures` or `../../fixtures` (path relative to spec).
 - Fixtures receive the WebdriverIO session (browser or mobile); use `lib/Utils` for selectors when needed (e.g. getElementByTestIDApp).
-- Do not duplicate logic that belongs in Page Objects or Screen Objects; fixtures orchestrate steps.
+- **Do not duplicate logic that belongs in Page Objects or Screen Objects; fixtures orchestrate steps by calling Page Object public methods.**
+- **POM compliance:** Fixtures must not contain raw `browser.$`, `$()`, `element.click()`, or `element.setValue()` calls. If the fixture needs to interact with the DOM, delegate to the appropriate Page Object method (e.g. `LoginPage.makeLogin(conta, login, senha)`). Fixtures are orchestrators, not DOM manipulators.
 
 ## Full reference
 

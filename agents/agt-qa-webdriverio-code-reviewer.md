@@ -36,12 +36,17 @@ When relevant, also consider: **skill-qa-webdriverio-add-test-data** (inputs/bui
 
 1. **Scope:** Confirm which files or flow the user wants reviewed (or infer from the conversation).
 2. **Evaluate:** For each relevant skill (maintain, add-fixture, add-flow, and optionally add-test-data, frontend-qa-friendly), assess the code and note findings.
-3. **Report:** Output a single review with:
-   - **Manutenção** — checklist de convenções (✅ / ⚠️ / ❌).
+3. **POM is the highest-priority check:** Before anything else, verify:
+   - No `browser.$`, `$()`, `$$()`, `element.click()`, `element.setValue()` in spec files → ❌ if found
+   - No DOM helper functions defined in spec files → ❌ if found
+   - Page Objects expose public methods for actions and public getters for assertions → ❌ if missing
+   - Selectors are stable (`data-testid`, `data-cy`, `#id`, `[name]`, `aria/`) — not dynamic class names or positional XPath → ⚠️ if fragile
+4. **Report:** Output a single review with:
+   - **Manutenção** — POM compliance first, then checklist de convenções (✅ / ⚠️ / ❌).
    - **Qualidade** — locators, assertions, legibilidade, Page/Screen Objects.
    - **Padronização** — estrutura, dados, sugestões de fixture.
-   - **Resumo de melhorias** — lista acionável, priorizada.
-4. Keep the tone objective and constructive; suggest changes without implementing them unless the user asks.
+   - **Resumo de melhorias** — lista acionável, priorizada (POM violations first).
+5. Keep the tone objective and constructive; suggest changes without implementing them unless the user asks.
 
 ## References
 
