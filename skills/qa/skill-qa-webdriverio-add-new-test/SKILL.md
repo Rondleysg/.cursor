@@ -29,8 +29,8 @@ All browser tests **must** follow the Page Object Model strictly. This is a non-
 ### Selectors (inside Page Objects)
 
 Prefer in this order:
-1. `aria/<label>` — accessibility label
-2. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes
+1. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes (priority)
+2. `aria/<label>` — accessibility label
 3. `#id` — stable IDs
 4. `[name="..."]` — form field names
 5. `$('..')` — parent traversal (WebdriverIO native)

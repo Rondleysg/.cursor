@@ -14,7 +14,7 @@ All browser tests **must** strictly follow the Page Object Model. This is the mo
 ### Separation of responsibilities
 
 | Layer | Responsibility |
-
+|---|---|
 | **Page Object** (`pageobjects/<dominio>/`) | All DOM interactions: selectors (getters), `click`, `setValue`, `waitForExist`, navigation, form submission, session management |
 | **Spec file** (`test/<dominio>/<fluxo>/`) | Orchestration only: call Page Object methods, assert with `expect`, add Allure metadata |
 
@@ -27,9 +27,9 @@ All browser tests **must** strictly follow the Page Object Model. This is the mo
 
 ### Selector quality (inside Page Objects)
 
-Prefer in this order:
+Priorizar **data-testid** (ou data-cy) em primeiro lugar; os demais quando não houver test id disponível. Prefer in this order:
 
-1. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes
+1. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes (priority)
 2. `aria/<label>` — accessibility label
 3. `#id` — stable IDs
 4. `[name="..."]` — form field names

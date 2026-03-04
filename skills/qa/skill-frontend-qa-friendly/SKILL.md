@@ -47,6 +47,7 @@ Frontend that lets tests locate and fill elements quickly and reliably, without 
 - Use `data-testid` when role/label are not enough (e.g. inner regions, dynamic lists, complex components).
 - Use a stable, documented convention (e.g. `data-testid="form-nome"`, `data-testid="btn-enviar"`).
 - Tests can then use `getByTestId('form-nome')`. Do not overuse; prefer accessible markup first.
+- Para os testes E2E deste projeto (WebdriverIO), **data-testid é o seletor preferido** quando o markup estiver sob controle do time; facilita Page Objects estáveis.
 
 ## Avoid
 

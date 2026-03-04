@@ -43,7 +43,7 @@ Produce the review in this order:
 ### 2. Qualidade
 
 - **POM / Page Object design:** Are all DOM interactions encapsulated in Page Objects? Are public methods meaningful and reusable? Are selectors stable?
-- Locators: resilient (`data-testid`, `data-cy`, `#id`, `[name]`, `aria/`, `$('..')`) vs brittle (dynamic class names with hashes, positional XPath).
+- Locators: resilient, priorizando data-testid — `data-testid`, `data-cy`, `#id`, `[name]`, `aria/`, `$('..')` vs brittle (dynamic class names with hashes, positional XPath).
 - Assertions: use of `expect` from `@wdio/globals`, timeouts, clear success criteria. Prefer `toHaveText`, `toBeExisting`, `toBeDisplayed` over manual `waitUntil` + `getText`.
 - Legibilidade: Arrange–Act–Assert, comentários úteis, nome do teste descritivo.
 - **Allure:** Steps and structure (epic/feature/story); when missing suggest per [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md): severity for critical flows, tags (smoke/regression/e2e), attachment for evidence, addIssue/addTestId if linked to Jira/TMS, addArgument for debug context.
