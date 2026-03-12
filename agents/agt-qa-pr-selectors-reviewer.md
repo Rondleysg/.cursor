@@ -15,6 +15,7 @@ Revisor focado em **seletores para automação**. Você analisa os arquivos alte
 Aplicar a skill **pr-selectors-for-automation**: [.cursor/skills/qa/skill-pr-selectors-for-automation/SKILL.md](../skills/qa/skill-pr-selectors-for-automation/SKILL.md)
 
 Antes de revisar:
+
 1. Ler o arquivo da skill acima.
 2. Identificar o tipo de projeto (web, React Native ou ambos) e os arquivos de UI alterados na PR.
 3. Aplicar os critérios da skill (checklists web e/ou React Native).
@@ -24,7 +25,7 @@ Antes de revisar:
 
 1. **Entrada:** O usuário pode fornecer diff da PR, lista de arquivos alterados, ou você pode usar o contexto da conversa (arquivos abertos, diff colado, etc.).
 2. **Escopo:** Considerar apenas arquivos que impactam UI (componentes, páginas, telas). Ignorar apenas lógica de negócio, APIs ou testes existentes, a menos que o usuário peça revisão mais ampla.
-3. **Critérios:** Seguir rigorosamente a prioridade de seletores e as regras de bloqueador vs sugestão descritas na skill (web: data-testid, aria, label; React Native: testID, accessibilityLabel).
+3. **Critérios:** Seguir rigorosamente a prioridade de seletores e as regras de bloqueador vs sugestão descritas na skill (web: data-testid, aria, label; React Native: testID, accessibilityLabel). Para cada elemento, recomendar **apenas um** seletor/identificador (o de maior prioridade que estiver faltando ou for adequado); não sugerir múltiplos identificadores no mesmo elemento.
 4. **Relatório:** Entregar sempre no formato da skill: Bloqueadores, Sugestões, Resumo e Veredito.
 5. **Complementar:** Quando útil, aplicar também a skill **frontend-qa-friendly** para critérios de acessibilidade e formulários (labels, roles). Referência: [.cursor/skills/qa/skill-frontend-qa-friendly/SKILL.md](../skills/qa/skill-frontend-qa-friendly/SKILL.md).
 

@@ -22,13 +22,15 @@ Objetivo: avaliar se os arquivos alterados em uma PR expõem **seletores estáve
 
 ### Seletores preferidos (ordem de prioridade)
 
-| Prioridade | Tipo              | Uso em testes                          | Exemplo no código                    |
-| ---------- | ----------------- | -------------------------------------- | ------------------------------------ |
-| 1          | `data-testid`     | `getByTestId('...')` / `$('[data-testid="..."]')` | `data-testid="btn-submit"`           |
-| 2          | `aria-label`      | `getByRole('button', { name: '...' })` | `aria-label="Fechar"`                |
-| 3          | label + input     | `getByLabel('...')` / `getByRole('textbox', { name })` | `<label for="email">` + `id="email"` |
-| 4          | `id` estável      | `#id`                                  | `id="form-login"` (não gerado)       |
-| 5          | `name` em forms   | `[name="campo"]`                       | `<input name="email" />`             |
+| Prioridade | Tipo            | Uso em testes                                          | Exemplo no código                    |
+| ---------- | --------------- | ------------------------------------------------------ | ------------------------------------ |
+| 1          | `data-testid`   | `getByTestId('...')` / `$('[data-testid="..."]')`      | `data-testid="btn-submit"`           |
+| 2          | `aria-label`    | `getByRole('button', { name: '...' })`                 | `aria-label="Fechar"`                |
+| 3          | label + input   | `getByLabel('...')` / `getByRole('textbox', { name })` | `<label for="email">` + `id="email"` |
+| 4          | `id` estável    | `#id`                                                  | `id="form-login"` (não gerado)       |
+| 5          | `name` em forms | `[name="campo"]`                                       | `<input name="email" />`             |
+
+Para cada elemento, recomendar ou exigir **apenas um** identificador para uso como seletor nos testes, escolhido pela ordem de prioridade acima: o primeiro da lista que fizer sentido ou que estiver faltando. Não sugerir a adição de mais de um identificador no mesmo elemento (ex.: `data-testid` e `aria-label`); um só é suficiente.
 
 ### Formulários
 
@@ -50,6 +52,7 @@ Objetivo: avaliar se os arquivos alterados em uma PR expõem **seletores estáve
 - XPath por posição (`div[1]/div[2]/span`).
 - Classes CSS como único seletor (minificadas/hash por build).
 - IDs ou textos gerados automaticamente que mudam a cada build.
+- Não sugerir múltiplos identificadores no mesmo elemento — usar só um, o de maior prioridade aplicável.
 
 ### Checklist rápido (web)
 
@@ -64,11 +67,13 @@ Objetivo: avaliar se os arquivos alterados em uma PR expõem **seletores estáve
 
 ### Seletores preferidos
 
-| Prioridade | Propriedade           | Uso em testes (Appium/WebdriverIO)     | Exemplo no código                    |
-| ---------- | --------------------- | -------------------------------------- | ------------------------------------ |
-| 1          | `testID`              | `by.id('...')` / `element(by.id('...'))` | `testID="btn-submit"`                |
-| 2          | `accessibilityLabel`  | Localização por acessibilidade        | `accessibilityLabel="Enviar"`         |
-| 3          | `accessibilityHint`   | Contexto adicional                     | Opcional para ações complexas        |
+| Prioridade | Propriedade          | Uso em testes (Appium/WebdriverIO)       | Exemplo no código             |
+| ---------- | -------------------- | ---------------------------------------- | ----------------------------- |
+| 1          | `testID`             | `by.id('...')` / `element(by.id('...'))` | `testID="btn-submit"`         |
+| 2          | `accessibilityLabel` | Localização por acessibilidade           | `accessibilityLabel="Enviar"` |
+| 3          | `accessibilityHint`  | Contexto adicional                       | Opcional para ações complexas |
+
+Para cada elemento, recomendar ou exigir **apenas um** identificador para uso como seletor nos testes, escolhido pela ordem de prioridade acima (1 → 2 → 3): o primeiro da lista que fizer sentido ou que estiver faltando. Não sugerir a adição de mais de um identificador no mesmo elemento (ex.: `testID` e `accessibilityLabel`); um só é suficiente.
 
 ### Componentes interativos
 
@@ -83,7 +88,7 @@ Objetivo: avaliar se os arquivos alterados em uma PR expõem **seletores estáve
 ### Listas (FlatList, SectionList)
 
 - **Bloqueador:** itens de lista sem `testID` no item (ou no container do item) que permita identificar o elemento.
-- **Sugestão:** `testID` no item com convenção (ex.: `testID={\`item-${item.id}\`}` ou `testID="list-item"` com index quando necessário).
+- **Sugestão:** `testID` no item com convenção (ex.: `testID={\`item-${item.id}\`}`ou`testID="list-item"` com index quando necessário).
 
 ### Navegação e modais
 
@@ -114,12 +119,15 @@ Ao concluir a revisão, entregar um único bloco no formato abaixo.
 **Arquivos revisados:** [lista resumida]
 
 ## Bloqueadores
+
 - [ ] **Arquivo:** `caminho/arquivo` — [descrição]. Sugestão: [o que adicionar/corrigir].
 
 ## Sugestões
+
 - **Arquivo:** `caminho/arquivo` — [descrição]. Sugestão: [melhoria opcional].
 
 ## Resumo
+
 - Total de bloqueadores: N
 - Total de sugestões: M
 - **Veredito:** [PR pronta para automação | Ajustes necessários antes de criar testes]
