@@ -62,14 +62,17 @@ Type `/agt-` in Cursor chat to list all agents. Filter by domain: `/agt-dev-` (g
 **Invoking an agent:** In Cursor chat, use **`/`** (slash) + agent name + your task. Example: `/agt-qa-playwright-add-flow` + "Add login flow for the UI".
 
 #### Dev — .NET
+
 - **agt-dev-dotnet-logging**: Structured logging with correlation-ID tracking
 - **agt-dev-dotnet-opentelemetry**: OpenTelemetry instrumentation
 
 #### Dev — Node.js
+
 - **agt-dev-nodejs-logging**: Structured logging with correlation-ID tracking (Node.js)
 - **agt-dev-nodejs-opentelemetry**: OpenTelemetry instrumentation (Node.js)
 
 #### Dev — Shared (multi-language)
+
 - **agt-dev-commit**: Conventional Commits, context grouping, GitHub CLI
 - **agt-dev-test**: Suggests/creates unit and integration tests
 - **agt-dev-security**: Security vulnerabilities, OWASP Top 10
@@ -80,12 +83,14 @@ Type `/agt-` in Cursor chat to list all agents. Filter by domain: `/agt-dev-` (g
 - **agt-dev-frontend-quality**: Frontend test-friendly for QA (accessibility, stable selectors; for dev use)
 
 #### QA (Playwright / frontend testability)
+
 - **agt-qa-playwright-maintain**: Maintains QA Playwright project conventions
 - **agt-qa-playwright-add-test**: Adds new API or UI test
 - **agt-qa-playwright-add-data**: Adds/extends test-data (inputs, builder)
 - **agt-qa-playwright-add-fixture**: Adds/extends fixture in fixtures/index.ts
 - **agt-qa-playwright-add-flow**: Adds new test flow (folders, specs, test-data)
 - **agt-qa-playwright-context**: Answers about structure, conventions, docs (read-only)
+- **agt-qa-notion-doc-sync**: Translates WebdriverIO test flows to BDD (pt-BR) and syncs living documentation to Notion (MCP)
 
 ### 3. Using Agents
 
@@ -104,18 +109,20 @@ Skills (folder prefix `skill-`) are referenced by agents. Organized by language 
 - **dotnet/**: skill-correlation-id-tracking, skill-opentelemetry-instrumentation
 - **nodejs/**: (same)
 - **shared/**: skill-testing, skill-security, skill-code-quality, skill-conventional-commits, skill-idempotency, skill-jira-update, skill-performance
-- **qa/**: skill-qa-playwright-maintain-conventions, skill-qa-playwright-add-new-test, skill-qa-playwright-add-test-data, skill-qa-playwright-add-fixture, skill-qa-playwright-add-new-flow, skill-frontend-qa-friendly
+- **qa/**: skill-qa-playwright-maintain-conventions, skill-qa-playwright-add-new-test, skill-qa-playwright-add-test-data, skill-qa-playwright-add-fixture, skill-qa-playwright-add-new-flow, skill-qa-notion-documentation, skill-frontend-qa-friendly
 
 ### 5. Custom Commands
 
 - **wb-commit**: Ensures commits follow Conventional Commits pattern with context-based grouping. Uses GitHub CLI (`gh`) for PR creation.
 
 Use in Cursor chat:
+
 ```
 /wb-commit
 ```
 
 The command:
+
 - Groups changes by context/module
 - Creates commits following Conventional Commits format
 - Uses `git add` and `git commit` for local operations
@@ -127,6 +134,7 @@ The command:
 ### Cursor Detection
 
 Cursor automatically detects:
+
 - Agents in `.cursor/agents/` (flat; no subdirectories — Cursor only lists agents at this level)
 - Skills in `.cursor/skills/` (including subdirectories)
 - Commands in `.cursor/commands/`
@@ -143,6 +151,7 @@ All paths in agents and skills use the full path from `.cursor/` (with `skill-` 
 ## Creating New Assets
 
 See [docs/CREATING_ASSETS.md](docs/CREATING_ASSETS.md) for detailed guides on:
+
 - Creating new agents (prefix `agt-`, domain `dev` or `qa`, no `-assistant` suffix)
 - Creating new skills (folder prefix `skill-`)
 - Creating new commands
@@ -151,14 +160,16 @@ See [docs/CREATING_ASSETS.md](docs/CREATING_ASSETS.md) for detailed guides on:
 ## Language Support
 
 Currently supported:
-- **.NET** (C#): Full support with agt-dev-dotnet-* agents and skill-* skills
-- **Node.js** (TypeScript/JavaScript): Full support with agt-dev-nodejs-* agents and skill-* skills
-- **Multi-language**: Shared agt-dev-* agents and skill-* skills
-- **QA / Playwright**: agt-qa-* agents and skill-qa-* / skill-frontend-qa-friendly
+
+- **.NET** (C#): Full support with agt-dev-dotnet-_ agents and skill-_ skills
+- **Node.js** (TypeScript/JavaScript): Full support with agt-dev-nodejs-_ agents and skill-_ skills
+- **Multi-language**: Shared agt-dev-_ agents and skill-_ skills
+- **QA / Playwright**: agt-qa-\* agents and skill-qa-\* / skill-frontend-qa-friendly
 
 ## Contributing
 
 When adding new assets:
+
 1. Put agents directly in `.cursor/agents/` (no subdirs); skills stay in `skills/dotnet/`, `skills/nodejs/`, `skills/shared/`, or `skills/qa/`
 2. Use prefix `agt-` for agents (name without `-assistant`); use prefix `skill-` for skill folder names
 3. Use proper frontmatter; reference skills using full paths (`.cursor/skills/.../skill-<name>/SKILL.md`)
