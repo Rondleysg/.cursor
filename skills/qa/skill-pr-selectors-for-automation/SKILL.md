@@ -5,7 +5,7 @@ description: Verifies that PRs of web or React Native projects expose correct, s
 
 # Revisão de seletores em PR para automação
 
-Objetivo: avaliar se os arquivos alterados em uma PR expõem **seletores estáveis e adequados** para criação de testes automatizados (web: Playwright/WebdriverIO; React Native: Appium/WebdriverIO).
+Objetivo: avaliar se os arquivos alterados em uma PR expõem **seletores estáveis e adequados** para criação de testes automatizados (web: Playwright/WebdriverIO; React Native: Appium/WebdriverIO). O agent que aplica esta skill pode obter o escopo da PR via GitHub CLI (`gh pr diff`) ou via `git diff` (branch atual vs base).
 
 ---
 
