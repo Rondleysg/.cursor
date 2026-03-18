@@ -58,12 +58,23 @@ No chat do Cursor, use **`/`** (barra) + nome do agente + prompt/tarefa. Exemplo
 - `agt-qa-playwright-context` — Responde sobre estrutura, convenções, docs (não edita código)
 - `agt-qa-notion-doc-sync` — Traduz fluxos WebdriverIO para BDD (pt-BR) e sincroniza documentação viva no Notion (MCP)
 
+### QA WebdriverIO
+
+- `agt-qa-webdriverio-maintain` — Convenções WDIO (POM, seletores sem XPath)
+- `agt-qa-webdriverio-add-test` — Novo teste (browser/app/E2E)
+- `agt-qa-webdriverio-add-data` — Test-data (inputs, builder)
+- `agt-qa-webdriverio-add-fixture` — Fixture em fixtures/index.ts
+- `agt-qa-webdriverio-add-flow` — Novo fluxo (pastas, specs, dados)
+- `agt-qa-webdriverio-context` — Contexto do repo WDIO (não edita código)
+- `agt-qa-webdriverio-code-reviewer` — Revisão consolidada QA WDIO
+- `agt-qa-pr-selectors-reviewer` — Revisa PR: seletores WDIO/Appium; **`data-testid`/`testID` = `<feature>-<component>-<element>`**; sem Playwright; XPath = bloqueador
+
 ## Skills (skill-)
 
 - **dotnet**: `skill-correlation-id-tracking`, `skill-opentelemetry-instrumentation`
 - **nodejs**: `skill-correlation-id-tracking`, `skill-opentelemetry-instrumentation`
 - **shared**: `skill-code-quality`, `skill-conventional-commits`, `skill-idempotency`, `skill-jira-update`, `skill-performance`, `skill-security`, `skill-testing`
-- **qa**: `skill-qa-code-review`, `skill-qa-playwright-maintain-conventions`, `skill-qa-playwright-add-new-test`, `skill-qa-playwright-add-test-data`, `skill-qa-playwright-add-fixture`, `skill-qa-playwright-add-new-flow`, `skill-qa-notion-documentation`, `skill-frontend-qa-friendly`
+- **qa**: `skill-qa-code-review`, `skill-qa-playwright-maintain-conventions`, `skill-qa-playwright-add-new-test`, `skill-qa-playwright-add-test-data`, `skill-qa-playwright-add-fixture`, `skill-qa-playwright-add-new-flow`, `skill-qa-notion-documentation`, `skill-frontend-qa-friendly`, `skill-pr-selectors-for-automation`, `skill-qa-webdriverio-maintain-conventions`, `skill-qa-webdriverio-add-new-test`, `skill-qa-webdriverio-add-test-data`, `skill-qa-webdriverio-add-fixture`, `skill-qa-webdriverio-add-new-flow`, `skill-qa-webdriverio-code-review`
 
 ## Referências
 
