@@ -28,21 +28,25 @@ All browser tests **must** follow the Page Object Model strictly. This is a non-
 
 ### Selectors (inside Page Objects)
 
-Prefer in this order:
-1. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes (priority)
-2. `aria/<label>` — accessibility label
-3. `#id` — stable IDs
-4. `[name="..."]` — form field names
-5. `$('..')` — parent traversal (WebdriverIO native)
-6. XPath — only as last resort; avoid positional XPath
+Base: [WebdriverIO — Selectors](https://webdriver.io/docs/selectors) + [skill-pr-selectors-for-automation](../skill-pr-selectors-for-automation/SKILL.md) (o que o dev expõe na PR).
+
+1. **`[data-testid="..."]` / `[data-cy="..."]`** — preferido quando existir no DOM.
+2. **`tag=texto`** — ex.: `$('button=Enviar')` (texto estável; cuidado com i18n).
+3. **`$('aria/Nome')`** — nome acessível (WDIO).
+4. **`[aria-label="..."]`**, **`#id`** estável, **`[name="..."]`**.
+5. **`$('..')`** — pai (WDIO).
+
+**XPath é proibido** — não usar `//...` em Page Objects. **Não** usar APIs do Playwright (`getByRole`, `getByLabel`, etc.); este projeto usa **WebdriverIO** (`$` / `browser.$`).
+
+**Nomenclatura** de `data-testid` / `data-cy` (web) e `testID` (app): **`<feature>-<component>-<element>`** — ex.: `login-form-email`, `login-form-submit`.
 
 ### Example structure
 
 ```typescript
 // pageobjects/manager/LoginPage.ts
 class LoginPage extends ManagerPage {
-  get inputEmail() { return browser.$('#username'); }
-  get errorMessage() { return browser.$('#error'); }
+  get inputEmail() { return browser.$('[data-testid="login-form-email"]'); }
+  get errorMessage() { return browser.$('[data-testid="login-form-error"]'); }
 
   public async fillCredentials(email: string, password: string) {
     await this.inputEmail.setValue(email);
@@ -111,7 +115,7 @@ it('should show error for empty email @critical', async () => {
 - [ ] Import `expect` from `@wdio/globals`; device access via Page/Screen Objects from `pageobjects/<dominio>/` and `screenobjects/<dominio>/` or `lib/Utils`; test-data from `test-data/<dominio>/<fluxo>/` with correct relative path
 - [ ] **POM enforced:** NO `browser.$`, `$()`, `click()`, `setValue()`, or DOM helpers in spec files — all in Page Objects
 - [ ] Page Objects expose public methods for actions and public getters for assertions
-- [ ] Selectors use stable attributes (`data-testid`, `data-cy`, `#id`, `[name]`, `aria/`) — no fragile class names or positional XPath
+- [ ] Seletores WDIO estáveis; IDs de teste no padrão `<feature>-<component>-<element>`; **sem XPath**; sem Playwright
 - [ ] Use test-data when there are reusable inputs; use builder or data-factory when varying data
 - [ ] Test name describes scenario and expected result; **include severity tag** (@blocker, @critical, @normal, @minor, @trivial) for that case; optionally @fluxo, @web, @app
 - [ ] (Recomendado) Allure: import `@wdio/allure-reporter`; estrutura (epic/feature/story), steps; opcional: severity, tag, attachment, issue/testId, argument — ver [docs/10-allure-reporter.md](../../../docs/10-allure-reporter.md)

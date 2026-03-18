@@ -1,71 +1,74 @@
 ---
 name: frontend-qa-friendly
-description: Guides frontend markup and structure for easy QA testing: web (semantic HTML, Playwright locators, data-testid) and React Native (testID, accessibilityLabel). Use when writing or reviewing UI components, forms, or pages that will be tested by QA.
+description: Guides frontend markup for QA automation: web (hooks para WebdriverIO — data-testid, texto, aria) and React Native (testID, accessibilityLabel). Use when writing or reviewing UI that will be tested by QA.
 ---
 
 # Frontend QA-friendly
 
-When writing or reviewing frontend code that will be tested by QA, ensure markup allows stable, fast locators. This skill covers **web** (e.g. Playwright) and **React Native** (e.g. Appium/WebdriverIO).
+Garantir markup que permita localizar elementos de forma **estável** nos testes. **Web:** automação E2E do projeto usa **WebdriverIO** (`$` / `browser.$`), não Playwright — ver mapeamento abaixo. **React Native:** Appium / WebdriverIO.
 
 ---
 
-## Web (HTML / Playwright)
+## Web — o que expor para **WebdriverIO**
 
-Ensure markup allows stable locators: `getByRole`, `getByLabel`, `getByTestId`. Avoid selectors that depend on DOM position or styling.
+Os testes usam seletores documentados em [WebdriverIO — Selectors](https://webdriver.io/docs/selectors). **Não** assumir APIs do Playwright (`getByRole`, `getByLabel`, `getByTestId`) no código de teste deste projeto.
+
+| Markup / conteúdo | Como o QA localiza (WebdriverIO) |
+| ----------------- | -------------------------------- |
+| `data-testid="x"` | `$('[data-testid="x"]')` |
+| Texto visível no botão/link | `$('button=Salvar')`, `$('a=Texto')` |
+| Nome acessível | `$('aria/Nome')` ou `[aria-label="..."]` |
+| `label for` + `id` no input | `$('#idDoInput')` |
+| `name` no form | `$('[name="campo"]')` |
 
 ### Goal
 
-Frontend that lets tests locate and fill elements quickly and reliably, without brittle XPaths like `div[1]/div[2]/input`.
+Frontend que permita localizar e preencher elementos **sem XPath** e sem depender só de classes de estilo.
 
 ### Forms
 
-- **Labels:** Always associate each input with a label: `<label for="id">` and `id` on the input, or wrap the input inside `<label>`.
-- Avoid inputs with no associated label; tests rely on `getByLabel('Label text')` or `getByRole('textbox', { name: 'Label text' })`.
-- **Placeholder:** If using placeholder as fallback, keep it stable or document it; tests may use `getByPlaceholder()`.
+- Associar cada input a label (`for`/`id` ou input dentro de `<label>`).
+- **Não** descrever para o QA como `getByLabel` — descrever: id estável ou `data-testid` ou `$('aria/...')` conforme o markup.
 
 ### Buttons and links
 
-- Use visible text or a stable `aria-label` so tests can use `getByRole('button', { name: '...' })` or `getByRole('link', { name: '...' })`.
-- Avoid buttons/links with no accessible name (e.g. icon-only without aria-label).
+- Texto visível estável ou `aria-label` (ícones) para permitir `$('button=...')` ou `[aria-label="..."]`.
 
-### Checkboxes and radios
+### Checkboxes e radios
 
-- Associate each control with a label or `aria-label` so tests can use `getByRole('checkbox', { name: '...' })` or `getByRole('radio', { name: '...' })`.
+- Label associada ou `aria-label` para localizar com CSS/`aria/` ou `data-testid` quando necessário (não depender de XPath).
 
-### Combos and selects
+### Combos e selects
 
-- Prefer native `<select>` or components that expose proper roles and names (e.g. combobox + option).
-- Avoid custom dropdowns that are only targetable by "first button in second div"; expose role and accessible name so tests can use `getByRole('combobox', { name: '...' })` and `getByRole('option', { name: '...' })`.
+- `<select>` nativo ou componente com nome acessível; evitar dropdown só localizável por ordem no DOM — preferir `data-testid` no controle.
 
-## IDs
+### data-testid (web) / testID (RN)
 
-- Use stable, unique IDs when you use `id`; avoid auto-generated IDs that change every build.
-- Prefer semantic hooks (role + label) over IDs for test locators when possible.
+- **Prioridade** quando o time controla o markup — [skill-pr-selectors-for-automation](../skill-pr-selectors-for-automation/SKILL.md).
+- **Padrão obrigatório:** **`<feature>-<component>-<element>`** (kebab-case). Ex.: `login-form-email`, `checkout-modal-confirm` — não usar só `btn-submit` ou `input-1`.
 
-## data-testid
+## Evitar (web)
 
-- Use `data-testid` when role/label are not enough (e.g. inner regions, dynamic lists, complex components).
-- Use a stable, documented convention (e.g. `data-testid="form-nome"`, `data-testid="btn-enviar"`).
-- Tests can then use `getByTestId('form-nome')`. Do not overuse; prefer accessible markup first.
-- Para os testes E2E deste projeto (WebdriverIO), **data-testid é o seletor preferido** quando o markup estiver sob controle do time; facilita Page Objects estáveis.
-
-## Avoid
-
-- **XPath by position:** Selectors like `./div[1]/div[2]/input` break when layout or structure changes.
-- **Style classes as sole hook:** Minified or hashed class names change between builds; do not rely on them for test selectors.
-- **Placeholders that change with i18n** without a stable fallback (e.g. label or data-testid) for tests.
+- **XPath posicional** como única forma de achar elemento (o projeto **proíbe XPath** nos testes).
+- Classes minificadas/hash como único hook.
+- Placeholder só com i18n sem `data-testid` ou `id` estável.
 
 ## Loading and feedback
 
-- Expose clear states so tests can wait for completion: e.g. `aria-busy="true"`, disabled submit button, or a visible "loading" element with role or data-testid.
-- Success/error messages: use `role="alert"` or stable text/data-testid so tests can assert with `getByRole('alert')` or `getByText(/.../)`.
+- Estados detectáveis: `aria-busy`, `data-testid` em spinner/mensagem, etc.
 
-## Checklist when writing or reviewing
+---
 
-- [ ] Every form input has an associated label (for/id or wrapped in label).
-- [ ] Buttons and links have visible text or aria-label.
-- [ ] Checkboxes and radios have a label or aria-label.
-- [ ] Combos/selects are reachable by role and name (native select or accessible custom component).
-- [ ] data-testid used only where role/label are insufficient; convention is stable and documented.
-- [ ] No test-critical selectors depend on div order or style-only classes.
-- [ ] Loading and result states are detectable (aria-busy, role="alert", or stable testid/text).
+## React Native
+
+- **Prioridade:** `testID` no padrão **`<feature>-<component>-<element>`** (ex.: `orders-item-list-row-${id}`); `accessibilityLabel` como complemento.
+- Listas: `testID` no item (`orders-item-list-row-${id}`).
+- Telas/modais: `testID` no container quando útil para esperas.
+- Evitar depender só de texto i18n sem `testID`.
+
+---
+
+## Referências
+
+- [WebdriverIO — Selectors](https://webdriver.io/docs/selectors)
+- [skill-pr-selectors-for-automation](../skill-pr-selectors-for-automation/SKILL.md)

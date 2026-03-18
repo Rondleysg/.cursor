@@ -7,6 +7,8 @@ description: Add or extend test data for a QA WebdriverIO flow: create or edit i
 
 When adding or extending test data for a flow, follow this structure.
 
+**Alinhamento com automação:** textos e chaves usados em asserts devem bater com a UI. Identificadores expostos para testes seguem **`<feature>-<component>-<element>`** em `data-testid`/`testID` (ver [skill-qa-webdriverio-maintain-conventions](../skill-qa-webdriverio-maintain-conventions/SKILL.md)).
+
 ## Where
 
 - **Per flow (por domínio):** `test-data/<dominio>/<fluxo>/` — domínios: app-cliente, log, manager, partners (ex.: `test-data/manager/login/`).

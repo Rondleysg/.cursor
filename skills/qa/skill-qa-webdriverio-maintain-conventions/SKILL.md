@@ -27,14 +27,31 @@ All browser tests **must** strictly follow the Page Object Model. This is the mo
 
 ### Selector quality (inside Page Objects)
 
-Priorizar **data-testid** (ou data-cy) em primeiro lugar; os demais quando não houver test id disponível. Prefer in this order:
+Seguir a [documentação WebdriverIO — Selectors](https://webdriver.io/docs/selectors) e alinhar ao que a PR deve expor ([skill-pr-selectors-for-automation](../skill-pr-selectors-for-automation/SKILL.md)). **Ordem preferida:**
 
-1. `[data-testid="..."]` or `[data-cy="..."]` — explicit test attributes (priority)
-2. `aria/<label>` — accessibility label
-3. `#id` — stable IDs
-4. `[name="..."]` — form field names
-5. `$('..')` — parent traversal (WebdriverIO native)
-6. XPath — only as last resort; avoid positional XPath or dynamic class names with hashes
+1. **`[data-testid="..."]` / `[data-cy="..."]`** — atributos explícitos de teste (prioridade do projeto).
+2. **Texto visível + tag** — `$('button=Salvar')`, `$('a=Detalhes')` (WDIO recomenda quando o texto é estável; atenção a i18n).
+3. **`$('aria/NomeAcessível')`** — seletor por nome acessível nativo WDIO.
+4. **`[aria-label="..."]`** — quando não houver texto visível.
+5. **`#id` estável** — não gerado pelo framework.
+6. **`[name="..."]`** — campos de formulário.
+7. **`$('..')`** — navegação para pai (nativo WDIO).
+
+**XPath — proibido.** Não usar `//...` nos Page Objects nem nos testes. Usar apenas CSS e estratégias suportadas na doc WDIO (incl. `tag=texto`, `aria/...`).
+
+**Evitar:** classes de estilo como único seletor (hash/minify); seletores posicionais frágeis.
+
+### Nomenclatura de identificadores (`data-testid`, `data-cy`, `testID` no app)
+
+Padrão obrigatório: **`<feature>-<component>-<element>`** (kebab-case, minúsculas).
+
+| Segmento | Uso | Exemplos |
+|----------|-----|----------|
+| **feature** | Fluxo ou área funcional | `login`, `checkout`, `profile` |
+| **component** | Bloco de UI (form, modal, lista…) | `form`, `modal`, `header` |
+| **element** | Campo, botão ou região | `email`, `submit`, `close` |
+
+Exemplos: `login-form-email`, `login-form-submit`, `checkout-modal-close`. Em listas, manter o prefixo estável e sufixo variável quando necessário: `orders-item-list-row-${id}`.
 
 ## Specs (test/)
 
@@ -49,7 +66,7 @@ Priorizar **data-testid** (ou data-cy) em primeiro lugar; os demais quando não 
 
 - [ ] **POM:** NO `browser.$`, `$()`, `click()`, `setValue()`, or DOM helpers in spec files — all DOM interactions in Page Objects
 - [ ] **POM:** Page Objects expose public methods for actions and public getters for assertions; selectors are private getters
-- [ ] **POM:** Selectors use stable attributes (`data-testid`, `data-cy`, `#id`, `[name]`, `aria/`) — no fragile class names or positional XPath
+- [ ] **POM:** Seletores estáveis; **nomenclatura** `<feature>-<component>-<element>` em `data-testid`/`data-cy`/`testID`; **sem XPath**; sem classes frágeis
 - [ ] Specs import `expect` from `@wdio/globals`; device access via `lib/Utils` (getDeviceFromCapabilities)
 - [ ] Reusable or scenario-specific inputs are in test-data (`inputs.ts`), not inline in specs
 - [ ] New tests go under `test/<dominio>/<fluxo>/` (e.g. test/manager/login/); new data under `test-data/<dominio>/<fluxo>/`; Page Objects in `pageobjects/<dominio>/`; Screen Objects in `screenobjects/<dominio>/` (and components); new flow has entry in `suites` in wdio.shared.conf
