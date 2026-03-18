@@ -10,6 +10,12 @@ role: Assistant for maintaining conventions; applies skill qa-webdriverio-mainta
 
 Assistente para manter convenções ao editar specs ou arquivos do projeto QA WebdriverIO.
 
+## Seletores (WebdriverIO)
+
+- **Doc:** [webdriver.io/docs/selectors](https://webdriver.io/docs/selectors).
+- **PR / markup:** [skill-pr-selectors-for-automation](../skills/qa/skill-pr-selectors-for-automation/SKILL.md).
+- **Page Objects:** seletores WDIO; **`data-testid`/`testID` no padrão `<feature>-<component>-<element>`**; **sem XPath**; **sem Playwright**.
+
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-maintain-conventions** (see [.cursor/skills/qa/skill-qa-webdriverio-maintain-conventions/SKILL.md](../skills/qa/skill-qa-webdriverio-maintain-conventions/SKILL.md)).

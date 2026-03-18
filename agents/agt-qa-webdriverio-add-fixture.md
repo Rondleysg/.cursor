@@ -10,6 +10,10 @@ role: Assistant for adding fixtures; applies skill qa-webdriverio-add-fixture an
 
 Assistente para adicionar ou estender uma fixture em fixtures/index.ts no projeto QA WebdriverIO.
 
+## Seletores (WebdriverIO)
+
+Fixtures → Page Objects. Seletores: [webdriver.io/docs/selectors](https://webdriver.io/docs/selectors); IDs de teste **`<feature>-<component>-<element>`**. **Sem XPath.** [skill-pr-selectors-for-automation](../skills/qa/skill-pr-selectors-for-automation/SKILL.md).
+
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-add-fixture** (see [.cursor/skills/qa/skill-qa-webdriverio-add-fixture/SKILL.md](../skills/qa/skill-qa-webdriverio-add-fixture/SKILL.md)).

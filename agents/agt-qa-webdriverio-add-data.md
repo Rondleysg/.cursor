@@ -10,6 +10,10 @@ role: Assistant for adding test data; applies skill qa-webdriverio-add-test-data
 
 Assistente para adicionar ou estender dados de teste (inputs.json, builder.ts) no projeto QA WebdriverIO.
 
+## Seletores (WebdriverIO)
+
+Dados de teste alinhados aos seletores WDIO e ao padrão **`<feature>-<component>-<element>`** em `data-testid`/`testID` ([skill-pr-selectors-for-automation](../skills/qa/skill-pr-selectors-for-automation/SKILL.md)). **XPath proibido.**
+
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-add-test-data** (see [.cursor/skills/qa/skill-qa-webdriverio-add-test-data/SKILL.md](../skills/qa/skill-qa-webdriverio-add-test-data/SKILL.md)).

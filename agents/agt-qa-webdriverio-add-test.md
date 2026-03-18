@@ -10,6 +10,14 @@ role: Assistant for adding new tests; applies skill qa-webdriverio-add-new-test 
 
 Assistente para adicionar um novo teste (browser, app ou E2E) seguindo o padrão do projeto QA WebdriverIO.
 
+## Seletores (WebdriverIO)
+
+- **Doc:** [webdriver.io/docs/selectors](https://webdriver.io/docs/selectors).
+- **PR / markup:** [skill-pr-selectors-for-automation](../skills/qa/skill-pr-selectors-for-automation/SKILL.md) — o que o dev expõe para o QA automatizar.
+- **Ordem nos Page Objects:** `data-testid` → `$('tag=Texto')` → `$('aria/Nome')` → `[aria-label]` → `#id` / `[name]` → `$('..')`.
+- **Proibido:** XPath e APIs Playwright (`getByRole`, etc.). Usar apenas `$` / `browser.$`.
+- **Nomenclatura:** `data-testid` / `testID` = **`<feature>-<component>-<element>`** (ex.: `login-form-submit`).
+
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-add-new-test** (see [.cursor/skills/qa/skill-qa-webdriverio-add-new-test/SKILL.md](../skills/qa/skill-qa-webdriverio-add-new-test/SKILL.md)).

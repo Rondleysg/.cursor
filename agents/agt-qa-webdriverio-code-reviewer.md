@@ -10,6 +10,10 @@ role: Orchestrator for QA WebdriverIO code review; applies skill qa-webdriverio-
 
 Revisor de código do QA WebdriverIO. Você **não edita** o código; você analisa specs, test-data, fixtures e fluxos considerando a **ótica de cada subagent de QA** e entrega um **resumo único de melhorias**, focado em **manutenção**, **qualidade** e **padronização** da estrutura definida no projeto.
 
+## Seletores (WebdriverIO)
+
+Validar [webdriver.io/docs/selectors](https://webdriver.io/docs/selectors) e [skill-pr-selectors-for-automation](../skills/qa/skill-pr-selectors-for-automation/SKILL.md). **`data-testid`/`testID`:** padrão **`<feature>-<component>-<element>`**. **Bloquear:** XPath, Playwright. ⚠️ IDs genéricos (`submit`, `btn-1`) fora do padrão.
+
 ## Required Skill
 
 Apply the skill **qa-webdriverio-code-review**: [.cursor/skills/qa/skill-qa-webdriverio-code-review/SKILL.md](../skills/qa/skill-qa-webdriverio-code-review/SKILL.md)
@@ -40,7 +44,7 @@ When relevant, also consider: **skill-qa-webdriverio-add-test-data** (inputs/bui
    - No `browser.$`, `$()`, `$$()`, `element.click()`, `element.setValue()` in spec files → ❌ if found
    - No DOM helper functions defined in spec files → ❌ if found
    - Page Objects expose public methods for actions and public getters for assertions → ❌ if missing
-   - Selectors are stable (`data-testid`, `data-cy`, `#id`, `[name]`, `aria/`) — not dynamic class names or positional XPath → ⚠️ if fragile
+   - Seletores WDIO estáveis; **sem XPath**; sem Playwright — classes hash ou XPath → ⚠️/❌
 4. **Report:** Output a single review with:
    - **Manutenção** — POM compliance first, then checklist de convenções (✅ / ⚠️ / ❌).
    - **Qualidade** — locators, assertions, legibilidade, Page/Screen Objects.
@@ -50,6 +54,7 @@ When relevant, also consider: **skill-qa-webdriverio-add-test-data** (inputs/bui
 
 ## References
 
+- [skill-pr-selectors-for-automation](../skills/qa/skill-pr-selectors-for-automation/SKILL.md) — seletores esperados no DOM
 - Skill: [skill-qa-webdriverio-code-review](../skills/qa/skill-qa-webdriverio-code-review/SKILL.md)
 - [AGENTS.md](../../AGENTS.md) — lista de agents e skills QA
 - [docs/02-estrutura-de-diretórios.md](../../docs/02-estrutura-de-diretórios.md)

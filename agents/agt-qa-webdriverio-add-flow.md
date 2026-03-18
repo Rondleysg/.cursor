@@ -10,6 +10,10 @@ role: Assistant for adding new flows; applies skill qa-webdriverio-add-new-flow 
 
 Assistente para adicionar um novo fluxo (pastas test + test-data, inputs, specs) ao projeto QA WebdriverIO. A estrutura é por **domínio** (app-cliente, log, manager, partners).
 
+## Seletores (WebdriverIO)
+
+Page Objects: [webdriver.io/docs/selectors](https://webdriver.io/docs/selectors) + [skill-pr-selectors-for-automation](../skills/qa/skill-pr-selectors-for-automation/SKILL.md). **`data-testid`/`testID`:** `<feature>-<component>-<element>`. **Sem XPath / Playwright.**
+
 ## Instructions
 
 1. Apply the skill **qa-webdriverio-add-new-flow** (see [.cursor/skills/qa/skill-qa-webdriverio-add-new-flow/SKILL.md](../skills/qa/skill-qa-webdriverio-add-new-flow/SKILL.md)).
