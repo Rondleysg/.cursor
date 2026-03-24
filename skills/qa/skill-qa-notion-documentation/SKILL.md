@@ -1,5 +1,5 @@
 ---
-description: QA Agent to translate Webdriver tests into BDD and sync them to Notion via MCP, organizing them hierarchically by domain.
+description: QA Agent to translate Webdriver tests into BDD and sync them to Notion via MCP (QA → doc root → domain → flow → test cases).
 alwaysApply: false
 ---
 
@@ -31,41 +31,49 @@ You are a Quality Assurance Engineer specializing in Living Documentation and Cl
 
 ## 4.1. Página raiz fixa (Documentação de Testes Automatizados)
 
-- **Use sempre** a página raiz de documentação de testes como pai de todos os domínios. Ela evita páginas soltas na raiz do workspace.
-- **Page ID da página raiz:** `32ce51c1-0cb9-8057-ae34-e533d5385dec` (título: "Documentação de Testes Automatizados").
-- **Fluxo:** (1) Crie ou localize a página "Domínio: [Nome]" **como filha** dessa página raiz (`parent: { type: "page_id", page_id: "32ce51c1-0cb9-8057-ae34-e533d5385dec" }`). (2) Crie as páginas de cenário como filhas do domínio.
-- O usuário deve **arrastar** "Documentação de Testes Automatizados" para dentro do teamspace **QA** no Notion (uma vez), se ainda não estiver.
+- **Use sempre** a página raiz de documentação de testes como pai de todas as páginas de produto/domínio. Ela evita páginas soltas na raiz do workspace.
+- **Page ID da página raiz:** `32de51c1-0cb9-8020-a5b4-d651578f29aa` (título: **Documentação de Testes Automatizados**).
+- **Link (referência humana):** [Documentação de Testes Automatizados](https://www.notion.so/32de51c10cb98020a5b4d651578f29aa?v=32de51c10cb980aca7b9000c5bb30de4).
+- **Visualização:** A raiz pode usar **vista em galeria**; cada cartão corresponde a uma página de **domínio** (Manager, Partners, …).
+- **Hierarquia completa:** **QA** (teamspace) → **Documentação de Testes Automatizados** (esta página) → **Domínio** (Manager, Partners, App Cliente, Log Admin, App Log) → **Fluxo** (ex.: **Login**, **Produtos**) → **casos de teste** (uma página por cenário). **Não** coloque casos de teste diretamente sob o domínio nem na raiz — sempre há uma página de fluxo entre domínio e cenário.
+- **Fluxo de sync:** (1) Localize a página de domínio como filha da raiz (`parent: { type: "page_id", page_id: "32de51c1-0cb9-8020-a5b4-d651578f29aa" }`). (2) Localize ou crie a **página de fluxo** como filha do domínio. (3) Crie ou atualize cada **caso de teste** como filho da página de fluxo.
+- O usuário deve manter **Documentação de Testes Automatizados** dentro do teamspace **QA** no Notion (uma vez), se ainda não estiver.
 
-## 5. Domain Hierarchy & Organization (Parent Pages)
+## 5. Hierarquia: domínio → fluxo → casos
 
-- Identify the business domain or feature module based on the folder structure or file name (e.g., if the file is in `/login/` or named `login.spec.js`, the domain is "Login").
-- **Root parent:** All domain pages must be created **under the fixed root page** "Documentação de Testes Automatizados" (page_id: `32ce51c1-0cb9-8057-ae34-e533d5385dec`). See §4.1.
-- **Search for the Parent Page:** Use **notion-search** (scoped to the QA teamspace when possible) to look for an existing page titled "Domínio: [Domain Name]".
-- **Create Parent if Missing:** If the domain page does not exist, use **notion-create-pages** with `parent: { type: "page_id", page_id: "32ce51c1-0cb9-8057-ae34-e533d5385dec" }` to create "Domínio: [Domain Name]". Obtain its Page ID.
-- **Set Parent:** When creating or updating the actual test scenario pages, you MUST set the domain Page ID as the parent of the scenario page. Use **notion-create-pages** with the appropriate `parent` parameter. DO NOT create test pages outside the root page or without a domain parent.
+- **Domínio** vem do primeiro segmento sob `test/` (ex.: `test/partners/login/login.spec.ts` → domínio **Partners**).
+- **Fluxo** vem da pasta do fluxo sob o domínio — o segmento após `test/<dominio>/` (ex.: `test/partners/login/` → página de fluxo **Login**; `test/partners/produtos/` → **Produtos**). Título da página de fluxo em **pt-BR**, com capitalização natural (ex.: **Horário de funcionamento** a partir de `horario-funcionamento`).
+- **Páginas de domínio canônicas (sem prefixo "Domínio:"):** **Manager**, **Partners**, **App Cliente**, **Log Admin**, **App Log**.
+- **Mapeamento repo → domínio:** `test/manager/` → **Manager**; `test/partners/` → **Partners**; demais produtos quando existirem no repo → **App Cliente** | **Log Admin** | **App Log** conforme convenção do time.
+- **Root:** Todas as páginas de domínio ficam sob **Documentação de Testes Automatizados** (page_id: `32de51c1-0cb9-8020-a5b4-d651578f29aa`). Ver §4.1.
+- **Buscar domínio:** **notion-search** pelo título exato **Manager**, **Partners**, etc. — **não** usar "Domínio: [Nome]".
+- **Criar domínio se faltar:** **notion-create-pages** com `parent: { type: "page_id", page_id: "32de51c1-0cb9-8020-a5b4-d651578f29aa" }` e título **Manager** | **Partners** | **App Cliente** | **Log Admin** | **App Log**. Sem prefixo "Domínio:".
+- **Página de fluxo:** Localize com **notion-search** como filha do domínio (ex.: **Login** dentro de **Partners**). Se não existir, crie com **notion-create-pages** usando `parent: { type: "page_id", page_id: "<page_id_do_domínio>" }` e título do fluxo (ex.: **Login**). A página de fluxo pode ter um parágrafo introdutório opcional (ex.: escopo dos casos de teste daquele fluxo); **não** agrupe o BDD de vários cenários nela — cada cenário permanece em página própria.
+- **Casos de teste:** Pai = **page_id da página de fluxo**. Nunca criar casos diretamente sob o domínio sem o nível de fluxo.
 
-## 5.1. Um cenário = uma página (arquivo devidamente intitulado)
+## 5.1. Um cenário = uma página (casos de teste sob o fluxo)
 
-- **Cada cenário de teste DEVE ser salvo em uma página própria** no Notion, com título claro e descritivo em pt-BR (ex.: "Login com sucesso (credenciais válidas)", "Erro quando o campo senha está vazio").
-- **Título da página:** Use um título que identifique unicamente o cenário (evite títulos genéricos como "Cenário de Teste: Login"; prefira "Login com sucesso" ou "Login — credenciais válidas").
-- **Hierarquia:** Documentação de Testes Automatizados → Domínio: [Nome] → uma página por cenário. Não agrupe vários cenários em uma única página.
+- **Cada caso de teste DEVE ser uma página própria**, filha da **página de fluxo** (ex.: em **Partners** → **Login** → páginas dos cenários).
+- **Título da página:** pt-BR, claro e único **dentro do mesmo fluxo** (ex.: "Sucesso com credenciais válidas", "Erro quando o campo senha está vazio").
+- **Hierarquia:** Documentação de Testes Automatizados → **[Domínio]** → **[Fluxo]** (ex.: Login) → **uma página por caso**. Não agrupar vários cenários numa única página.
 
 ## 6. Idempotency & Sync Strategy (Create vs. Update)
 
 - **Objetivo:** A sincronização deve ser **idempotente**: executar várias vezes com o mesmo spec deve produzir o mesmo estado final (sem páginas duplicadas, conteúdo atualizado).
 - **Por cenário:** Para cada cenário extraído do spec:
-    1. **Buscar:** Use **notion-search** (sob o domínio ou a raiz "Documentação de Testes Automatizados") para verificar se já existe uma página com o **mesmo título** do cenário, sob o mesmo domínio.
-    2. **Se NÃO existir:** Crie **uma** página com **notion-create-pages** sob a página do Domínio, com `properties: { title: "[Título do cenário]" }` e o conteúdo BDD.
-    3. **Se JÁ existir:** Use **notion-fetch** para obter o page_id e o conteúdo atual; use **notion-update-page** com `replace_content` para atualizar apenas o conteúdo BDD. Não crie uma segunda página com o mesmo título.
-- **Nunca** criar duplicatas: o identificador funcional é o **título da página** dentro do mesmo domínio. Se o cenário mudar de nome no spec, considere criar nova página e opcionalmente remover ou arquivar a antiga conforme política do time.
+    1. **Buscar:** Use **notion-search** (sob a **página de fluxo** ou o domínio) para verificar se já existe página com o **mesmo título** do caso **sob o mesmo fluxo**.
+    2. **Se NÃO existir:** **notion-create-pages** com `parent` = page_id da **página de fluxo**, `properties: { title: "[Título do caso]" }` e conteúdo BDD.
+    3. **Se JÁ existir:** **notion-fetch** + **notion-update-page** (`replace_content`) no BDD apenas. Não duplicar.
+- **Nunca** duplicar: o identificador funcional é o **título da página** **dentro do mesmo fluxo** (Domínio → Fluxo → título do caso). Se o cenário mudar de nome no spec, avaliar nova página ou arquivar a antiga conforme política do time.
 
 ## 7. Structure & Markdown (Organização e legibilidade)
 
 - **Notion Markdown:** Before generating content for **notion-create-pages** or **notion-update-page**, fetch the MCP resource `notion://docs/enhanced-markdown-spec` and use only supported Notion-flavored Markdown (callouts, headings, bold, separators). Do not guess syntax.
 - **Page structure (uma página por cenário):** Cada página corresponde a **um** cenário. Estrutura:
-    1. **Conteúdo:** Os passos BDD em um único bloco: **Dado** ... **Quando** ... **Então** ... (palavras-chave em negrito). Opcionalmente use um callout: `<callout icon="📋">**Dado** ... **Quando** ... **Então** ...</callout>`.
+    1. **Conteúdo BDD:** **Dado**, **Quando** e **Então** em **parágrafos separados**. Nunca colar **Quando** ou **Então** no mesmo parágrafo que o **Dado** anterior. Palavras-chave em negrito. Opcionalmente envolver tudo num callout, **Dado**, **Quando** e **Então** (três parágrafos dentro do callout).
     2. Não incluir bloco manual de “última atualização” ou horário; o Notion já expõe edição recente na interface.
     3. Não use múltiplos cenários (H2) na mesma página; cada cenário tem sua própria página com título próprio.
-- **BDD steps:** Um bloco por página: **Dado** ... **Quando** ... **Então** ... (pt-BR, negrito nas palavras-chave).
-- **Domain parent pages ("Domínio: [Nome]"):** Inclua uma breve descrição no topo (um parágrafo ou callout) do que o domínio cobre. As páginas filhas (um cenário cada) aparecem automaticamente como subpáginas no Notion.
-- **Naming:** Os títulos das páginas de cenário devem ser em **português brasileiro (pt-BR)** e concisos (ex.: "Login com sucesso", "Erro quando o campo senha está vazio"). O título da página é o "nome do arquivo" do cenário.
+- **BDD steps:** Um “cenário” por página; pt-BR; **Dado** / **Quando** / **Então** cada um no seu parágrafo.
+- **Páginas de domínio (Manager, Partners, …):** Descrição opcional do escopo do produto; filhas = **páginas de fluxo** (Login, Produtos, …), não os casos diretamente.
+- **Páginas de fluxo (ex.: Login):** Intro opcional sobre o fluxo; filhas = **uma página por caso de teste** (BDD).
+- **Naming (casos):** pt-BR, concisos; **não** repetir o **domínio** no título. O **fluxo** (ex.: Login) já é a página pai — priorizar clareza e título **único dentro do mesmo fluxo** (ex.: "Sucesso com credenciais válidas", "Erro quando a senha está vazia").
